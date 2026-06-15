@@ -4,10 +4,10 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useApp } from "@/context/appContext";
-import { Menu, X, Wrench, ShieldAlert, User, ShieldCheck } from "lucide-react";
+import { Menu, X, Wrench, ShieldAlert, User, ShieldCheck, Sun, Moon } from "lucide-react";
 
 export default function Navbar() {
-  const { role, setRole, user } = useApp();
+  const { role, setRole, theme, toggleTheme } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
@@ -57,7 +57,7 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Role Switcher & Action Button */}
+          {/* Role Switcher, Theme Toggle & Action Button */}
           <div className="hidden md:flex items-center gap-4">
             
             {/* Quick Portal Access depending on Role */}
@@ -91,6 +91,15 @@ export default function Navbar() {
               </select>
             </div>
 
+            {/* Theme Toggle Button */}
+            {/* <button
+              onClick={toggleTheme}
+              className="p-2.5 rounded-lg bg-[#22222a] border border-divider text-gray-300 hover:text-white transition-colors cursor-pointer"
+              aria-label="Toggle Theme"
+            >
+              {theme === "dark" ? <Sun className="w-4 h-4 text-yellow-500" /> : <Moon className="w-4 h-4 text-accent-blue" />}
+            </button> */}
+
             {/* Emergency SOS Toggler */}
             <Link
               href="/sos"
@@ -103,6 +112,14 @@ export default function Navbar() {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-2">
+            {/* Quick Theme Switcher for Mobile */}
+            {/* <button
+              onClick={toggleTheme}
+              className="p-2 bg-[#22222a] rounded-lg border border-divider text-gray-300 text-xs"
+            >
+              {theme === "dark" ? <Sun className="w-4 h-4 text-yellow-500 inline" /> : <Moon className="w-4 h-4 text-accent-blue inline" />}
+            </button> */}
+
             {/* Quick Role Switcher for Mobile */}
             <button
               onClick={() => setRole(role === 'CUSTOMER' ? 'ADMIN' : 'CUSTOMER')}

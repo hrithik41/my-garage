@@ -34,7 +34,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${outfit.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#0d0d11] text-[#f3f4f6] font-sans">
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <AppProvider>
           {/* Header Navigation */}
           <Navbar />

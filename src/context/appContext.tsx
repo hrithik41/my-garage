@@ -25,6 +25,8 @@ interface AppContextType {
   appliedCoupon: Coupon | null;
   applyCoupon: (code: string) => boolean;
   clearCoupon: () => void;
+  theme: 'dark' | 'light';
+  toggleTheme: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -42,9 +44,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [user, setUser] = useState<UserProfile>(initialUser);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
-  // Load bookings from mockData initially, or localStorage if available
+  // Load theme and bookings initially
   useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+
     const savedBookings = localStorage.getItem('garage_bookings');
     if (savedBookings) {
       setBookings(JSON.parse(savedBookings));
@@ -52,6 +60,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setBookings(mockBookings);
     }
   }, []);
+
+  // Update DOM classes when theme changes
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   const saveBookings = (newBookings: Booking[]) => {
     setBookings(newBookings);
@@ -138,6 +162,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       appliedCoupon,
       applyCoupon,
       clearCoupon,
+      theme,
+      toggleTheme,
     }}>
       {children}
     </AppContext.Provider>
